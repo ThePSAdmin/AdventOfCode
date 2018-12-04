@@ -10,7 +10,7 @@ for ($i = 1; $i -lt $sortedInput.Length; $i++) {
     $diff = Compare-Object -ReferenceObject $refCharArray -DifferenceObject $diffCharArray -IncludeEqual | 
         Where-Object 'SideIndicator' -eq '=='
 
-    if ($diff.Count -eq ($refCharArray.Length - 1)) {
+    if ($diff.Length -eq ($refCharArray.Length - 1)) {
         -join $diff.InputObject
         break
     }
