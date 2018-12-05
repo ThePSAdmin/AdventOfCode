@@ -38,7 +38,7 @@ foreach ($record in $records) {
         "^wakes" {
             $endSleepTime = $record.TimeStamp.AddMinutes(-1)
             $guardLog[$currentGuard].TotalMinutesAsleep += [int](New-TimeSpan -Start $startSleepTime -End $endSleepTime).TotalMinutes
-            ($startSleepTime.Minute)..($endSleepTime.Minute) | ForEach-Object {$guardLog[$currentGuard].MinutesAsleep += $_}
+            $guardLog[$currentGuard].MinutesAsleep += ($startSleepTime.Minute)..($endSleepTime.Minute)
         }
     }
 }
