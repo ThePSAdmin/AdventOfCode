@@ -11,9 +11,10 @@ foreach ($record in $exInput) {
         Event = $m.Groups[2].Value
         GuardID = $m.Groups[4].Value
     }
-
+    
     if ($currentRecord.GuardID -and (-not $guardLog[$currentRecord.GuardID])) {
         $guardLog[$currentRecord.GuardID] = [PSCustomObject]@{
+            PSTypeName = "AoC.Guard"
             MinutesAsleep = @()
             TotalMinutesAsleep = 0
         }
@@ -43,6 +44,14 @@ foreach ($record in $records) {
     }
 }
 
+$updateTypeDataSplat = @{
+    MemberType = 'ScriptProperty'
+    MemberName = "MinuteSleptMost"
+    TypeName = "AoC.Guard"
+    Value = {$this.MinutesAsleep | Group-Object | Sort-Object -Property Count -Descending | Select-Object -Property Name, Count -First 1}
+}
+Update-TypeData @updateTypeDataSplat
+
 $sleepiestGuard = $guardLog.GetEnumerator() | 
     Sort-Object {$_.Value.TotalMinutesAsleep} -Descending | 
     Select-Object -First 1 
@@ -52,4 +61,10 @@ $sleepiestGuard = $guardLog.GetEnumerator() |
     Sort-Object -Property Count -Descending |
     Select-Object -First 1 -ExpandProperty Name
 
-[int]$sleepiestGuard.Name * $minuteMostAsleep
+
+$minuteSleptMostGuard = $guardLog.GetEnumerator() | Sort-Object {$_.Value.MinuteSleptMost.Count} -Descending | Select-Object -First 1
+
+[PSCustomObject]@{
+    Part1 = ([int]$sleepiestGuard.Name * $minuteMostAsleep)
+    Part2 = ([int]$minuteSleptMostGuard.Name * $minuteSleptMostGuard.Value.MinuteSleptMost.Name)
+}
