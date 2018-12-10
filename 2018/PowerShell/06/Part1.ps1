@@ -2,11 +2,18 @@
 param(
     [Parameter()]
     [string[]]
-    $PuzzleInput
+    $PuzzleInput,
+
+    [Parameter()]
+    [int]
+    $RegionSize
 )
 
 function _getNearestCoord ([int]$x, [int]$y) {
     $closestPos = [int]::MaxValue
+
+    $coordRegionTotal = 0
+
     foreach ($coord in $coordList) {
         $position = [math]::abs($x - $coord.x) + [math]::abs($y - $coord.y)
 
@@ -16,6 +23,12 @@ function _getNearestCoord ([int]$x, [int]$y) {
             $closestCoord = $coord
             $closestPos = $position
         }
+
+        $coordRegionTotal += $position
+    }
+
+    if ($coordRegionTotal -lt $RegionSize) {
+        $script:inRegionCount++
     }
     
     return $closestCoord
@@ -33,6 +46,8 @@ foreach ($i in $PuzzleInput) {
     }
     $coordList.Add($coordsObject)
 }
+
+$script:inRegionCount = 0
 
 $xSorted = $coordList | Sort-Object -property x 
 $ySorted = $coordList | Sort-Object -property y 
@@ -68,6 +83,7 @@ $part1 = $coordList | Where-Object {$_.isEdge -eq $false} | Sort-Object -Propert
 
 [PSCustomObject]@{
     Part1 = $part1
+    Part2 = $inRegionCount
 }
 
 
