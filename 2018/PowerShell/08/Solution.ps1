@@ -33,7 +33,6 @@ function _getNodes {
         $currentNode.ChildNodeLocation += $nodeList.IndexOf($childNode)
     }
 
-    
     $currentNode.MetaData = $PuzzleInput[$currentPosition..$($currentPosition + $currentNode.MetaDataCount - 1)]
     $script:currentPosition = $script:currentPosition + $currentNode.MetaDataCount
 
