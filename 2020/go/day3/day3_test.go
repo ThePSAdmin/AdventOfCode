@@ -15,11 +15,11 @@ func TestDay3(t *testing.T) {
 			t.Errorf("Expected %v but got %v", expected, actual)
 		}
 	})
-	// t.Run("Part 2", func(t *testing.T) {
-	// 	actual := Part2(input)
-	// 	expected := 1
-	// 	if actual != expected {
-	// 		t.Errorf("Expected %v but got %v", expected, actual)
-	// 	}
-	// })
+	t.Run("Part 2", func(t *testing.T) {
+		actual := Part2(input)
+		expected := 336
+		if actual != expected {
+			t.Errorf("Expected %v but got %v", expected, actual)
+		}
+	})
 }
