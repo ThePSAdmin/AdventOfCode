@@ -28,6 +28,7 @@ func parsePassword(s string) Password {
 		Char:     char,
 		Password: password,
 	}
+	fmt.pr
 }
 
 func main() {
