@@ -14,14 +14,29 @@ func main() {
 
 func Part1(input []string) int {
 	var seatids []int
+	var seatArray [128][8]bool
 	for _, v := range input {
-		seatids = append(seatids, GetSeat(v))
+		seatids = append(seatids, GetSeat(v, &seatArray))
 	}
 	sort.Ints(seatids)
+
+	for i := 2; i < 122; i++ {
+		fmt.Print()
+		for j := 0; j < 8; j++ {
+			if !seatArray[i][j] {
+				fmt.Printf("Found available seat in row: %v seat: %v with id: %v\n", i, j, ((i * 8) + j))
+			}
+		}
+	}
+
 	return seatids[len(seatids)-1]
 }
 
-func GetSeat(s string) int {
+// func Part2(input []string) int {
+// 	var seatArray [127][7]bool
+// }
+
+func GetSeat(s string, arr *[128][8]bool) int {
 	row := 0
 	for i := 0; i < 7; i++ {
 		row = row << 1
@@ -37,6 +52,8 @@ func GetSeat(s string) int {
 			seat = seat + 1
 		}
 	}
+
+	(*arr)[row][seat] = true
 
 	return (row * 8) + seat
 
